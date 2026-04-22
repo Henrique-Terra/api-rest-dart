@@ -1,0 +1,20 @@
+import 'package:shelf/shelf.dart';
+
+Middleware corsMiddleware() {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+  };
+
+  return (Handler innerHandler) {
+    return (Request request) async {
+      if (request.method == 'OPTIONS') {
+        return Response.ok('', headers: headers);
+      }
+
+      final response = await innerHandler(request);
+      return response.change(headers: headers);
+    };
+  };
+}

@@ -1,0 +1,202 @@
+{
+  "info": {
+    "name": "API Tarefas × Projetos",
+    "description": "Coleção completa da API REST desenvolvida em Dart/Shelf.\nAutenticação: enviar o header `Authorization: 123` em todas as requisições.\n\nRelação: um Projeto possui muitas Tarefas (1:N).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Projetos",
+      "description": "Endpoints da entidade pai: Projetos",
+      "item": [
+        {
+          "name": "Listar todos os projetos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/projetos", "host": ["{{base_url}}"], "path": ["projetos"] },
+            "description": "Retorna uma lista com todos os projetos cadastrados. Status 200 em caso de sucesso."
+          }
+        },
+        {
+          "name": "Buscar projeto por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/projetos/1",
+              "host": ["{{base_url}}"],
+              "path": ["projetos", "1"]
+            },
+            "description": "Retorna os dados de um projeto específico pelo seu ID. Status 200 se encontrado, 404 se não existir."
+          }
+        },
+        {
+          "name": "Criar projeto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Site Institucional\",\n  \"descricao\": \"Desenvolvimento do novo site da empresa\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/projetos", "host": ["{{base_url}}"], "path": ["projetos"] },
+            "description": "Cria um novo projeto. Campos obrigatórios: `nome` e `descricao`. Retorna status 201 com o ID gerado."
+          }
+        },
+        {
+          "name": "Atualizar projeto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Site Institucional v2\",\n  \"descricao\": \"Redesign completo do site corporativo\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos/1",
+              "host": ["{{base_url}}"],
+              "path": ["projetos", "1"]
+            },
+            "description": "Atualiza os dados de um projeto existente. Retorna 200 em caso de sucesso, 404 se o projeto não existir."
+          }
+        },
+        {
+          "name": "Remover projeto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/projetos/1",
+              "host": ["{{base_url}}"],
+              "path": ["projetos", "1"]
+            },
+            "description": "Remove um projeto pelo ID. As tarefas vinculadas são removidas automaticamente. Retorna 204 No Content em caso de sucesso, 404 se não encontrado."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tarefas",
+      "description": "Endpoints da entidade filho: Tarefas",
+      "item": [
+        {
+          "name": "Listar todas as tarefas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/tarefas", "host": ["{{base_url}}"], "path": ["tarefas"] },
+            "description": "Retorna uma lista com todas as tarefas cadastradas, independentemente do projeto. Status 200 em caso de sucesso."
+          }
+        },
+        {
+          "name": "Buscar tarefa por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tarefas/1",
+              "host": ["{{base_url}}"],
+              "path": ["tarefas", "1"]
+            },
+            "description": "Retorna os dados de uma tarefa específica pelo seu ID. Status 200 se encontrada, 404 se não existir."
+          }
+        },
+        {
+          "name": "Listar tarefas de um projeto",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/projetos/1/tarefas",
+              "host": ["{{base_url}}"],
+              "path": ["projetos", "1", "tarefas"]
+            },
+            "description": "Retorna todas as tarefas vinculadas a um projeto específico (relação 1:N). Status 200 com array (pode ser vazio)."
+          }
+        },
+        {
+          "name": "Criar tarefa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Implementar tela de login\",\n  \"descricao\": \"Criar a tela de autenticação com validação de formulário\",\n  \"concluida\": false,\n  \"projeto_id\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/tarefas", "host": ["{{base_url}}"], "path": ["tarefas"] },
+            "description": "Cria uma nova tarefa vinculada a um projeto. Campos obrigatórios: `titulo`, `descricao`, `concluida` (boolean) e `projeto_id`. Retorna status 201 com o ID gerado."
+          }
+        },
+        {
+          "name": "Atualizar tarefa",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Implementar tela de login\",\n  \"descricao\": \"Tela de autenticação finalizada com validação\",\n  \"concluida\": true,\n  \"projeto_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tarefas/1",
+              "host": ["{{base_url}}"],
+              "path": ["tarefas", "1"]
+            },
+            "description": "Atualiza os dados de uma tarefa existente. Retorna 200 em caso de sucesso, 404 se a tarefa não existir."
+          }
+        },
+        {
+          "name": "Remover tarefa",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tarefas/1",
+              "host": ["{{base_url}}"],
+              "path": ["tarefas", "1"]
+            },
+            "description": "Remove uma tarefa pelo ID. Retorna 204 No Content em caso de sucesso, 404 se não encontrada."
+          }
+        }
+      ]
+    }
+  ]
+}
