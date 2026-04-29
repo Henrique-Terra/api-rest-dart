@@ -1,4 +1,4 @@
-# API REST em Dart - Projetos e Tarefas
+# Full Stack em Dart - Projetos e Tarefas
 
 Projeto desenvolvido em Dart com o objetivo de implementar uma API REST com:
 
