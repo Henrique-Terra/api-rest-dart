@@ -44,19 +44,19 @@ class AppTarefas extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const TarefasListaPage(),
+      home: const HomeTela(),
     );
   }
 }
 
-class TarefasListaPage extends StatefulWidget {
-  const TarefasListaPage({super.key});
+class HomeTela extends StatefulWidget {
+  const HomeTela({super.key});
 
   @override
-  State<TarefasListaPage> createState() => _TarefasListaPageState();
+  State<HomeTela> createState() => _HomeTelaState();
 }
 
-class _TarefasListaPageState extends State<TarefasListaPage> {
+class _HomeTelaState extends State<HomeTela> {
   static const String _baseUrl = 'http://localhost:8080';
   static const String _token = '123';
 
@@ -99,7 +99,8 @@ class _TarefasListaPageState extends State<TarefasListaPage> {
       }
     } catch (e) {
       setState(() {
-        _erro = 'Não foi possível conectar à API.\nVerifique se o servidor está rodando.';
+        _erro =
+            'Não foi possível conectar à API.\nVerifique se o servidor está rodando.';
         _carregando = false;
       });
     }
@@ -116,6 +117,16 @@ class _TarefasListaPageState extends State<TarefasListaPage> {
             icon: const Icon(Icons.refresh),
             tooltip: 'Recarregar',
             onPressed: _carregarDados,
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            tooltip: 'Segunda Tela',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SegundaTela()),
+              );
+            },
           ),
         ],
       ),
@@ -204,6 +215,33 @@ class _TarefasListaPageState extends State<TarefasListaPage> {
           ),
         );
       },
+    );
+  }
+}
+
+class SegundaTela extends StatelessWidget {
+  const SegundaTela({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Segunda Tela'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                tooltip: 'Voltar',
+                onPressed: () => Navigator.pop(context),
+              )
+            : null,
+      ),
+      body: const Center(
+        child: Text(
+          'Bem-vindo à Segunda Tela!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
     );
   }
 }
